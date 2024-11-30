@@ -1,10 +1,14 @@
 package main
 
 import (
-	"log"
 	"net/http"
+
+	"github.com/gin-gonic/gin"
 )
 
 func main() {
-	log.Fatal(http.ListenAndServe(":9090", http.FileServer(http.Dir("../../web"))))
+	router := gin.Default()
+	router.StaticFS("/", http.Dir("../../web"))
+
+	router.Run(":9090")
 }
