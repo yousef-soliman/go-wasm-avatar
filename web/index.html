@@ -45,7 +45,8 @@
         <!-- Submit Button -->
         <button type="submit" class="btn btn-primary">Submit</button>
       </form>
-      <img id="targetImg" alt="Generated Avatar" />
+      <div id="status"></div>
+      <img id="targetImg" alt="Generated Avatar" class="d-none" />
     </div>
     <script>
       document
@@ -66,6 +67,7 @@
       function displayImage(buf) {
         let blob = new Blob([buf], { type: "jpeg" });
         document.getElementById("targetImg").src = URL.createObjectURL(blob);
+        document.getElementById("targetImg").classList.remove("d-none");
       }
     </script>
   </body>

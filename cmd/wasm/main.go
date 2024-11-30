@@ -16,8 +16,17 @@ func main() {
 	<-make(chan struct{})
 }
 
+func logError(msg string) {
+	js.Global().Get("document").
+		Call("getElementById", "status").
+		Set("innerText", msg)
+}
+
 func GenerateAvatar(gender govatar.Gender, username string) (image.Image, error) {
 	img, err := govatar.GenerateForUsername(gender, username)
+	if err != nil {
+		logError(err.Error())
+	}
 	buf := new(bytes.Buffer)
 	jpeg.Encode(buf, img, nil)
 	imgBytes := buf.Bytes()
@@ -38,6 +47,9 @@ func HanldeSubmitForm(this js.Value, args []js.Value) any {
 	username := args[1].String()
 	fmt.Printf("username %s\n", username)
 	fmt.Printf("gender %s\n", gender)
-	GenerateAvatar(typeGender, username)
+	_, err := GenerateAvatar(typeGender, username)
+	if err != nil {
+		return false
+	}
 	return true
 }
